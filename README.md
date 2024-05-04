@@ -4,3 +4,7 @@ The main purpose of this repository is to keep track of my own modifications to 
 You should definitely checkout the Kickstart repo and read that configuration through before
 checking this one.
 
+```text
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+```
+
