@@ -194,7 +194,9 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 vim.keymap.set('n', '<leader>si', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<cword>"<CR>', {
   desc = '[S]earch current word in the [I]nternet',
 })
-vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<CR>')
+vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>', { desc = 'Toggle File Tree' })
+vim.keymap.set('n', '<leader>nn', ':NvimTreeFindFile<CR>', { desc = 'Fi[N]d current file i[N] tree' })
+vim.keymap.set('n', '<leader>nc', ':NvimTreeCollapse<CR>', { desc = 'Collapse File Tree' })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
