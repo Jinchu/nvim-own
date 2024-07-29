@@ -221,6 +221,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- replace line with yanked text
+vim.keymap.set('n', '<leader>p', '"_ddkp', { desc = 're[p]lace the this line' })
+
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   desc = 'For terraform LSP',
   pattern = { '*.tf', '*.tfvars' },
@@ -604,6 +607,7 @@ require('lazy').setup({
         -- gopls = {},
         pyright = {},
         terraformls = {},
+        tflint = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
