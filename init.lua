@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -103,6 +103,10 @@ vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
+
+-- Add ruler
+vim.opt.colorcolumn = '100'
+vim.opt.expandtab = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -190,6 +194,17 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Jinchu: web search the current word
+vim.keymap.set('n', '<leader>si', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<cword>"<CR>', {
+  desc = '[S]earch current word in the [I]nternet',
+})
+vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>', { desc = 'Toggle File Tree' })
+vim.keymap.set('n', '<leader>nn', ':NvimTreeFindFile<CR>', { desc = 'Fi[N]d current file i[N] tree' })
+vim.keymap.set('n', '<leader>nc', ':NvimTreeCollapse<CR>', { desc = 'Collapse File Tree' })
+
+-- replace line with yanked text
+vim.keymap.set('n', '<leader>p', '"_ddkp', { desc = 're[p]lace the this line' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -201,6 +216,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  desc = 'For terraform LSP',
+  pattern = { '*.tf', '*.tfvars' },
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'sh',
+  callback = function()
+    vim.lsp.start {
+      name = 'bash-language-server',
+      cmd = { 'bash-language-server', 'start' },
+    }
   end,
 })
 
@@ -571,7 +604,9 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
+        terraformls = {},
+        tflint = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -802,6 +837,17 @@ require('lazy').setup({
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+
+  -- Fugitive is the Git add-on for nvim
+  { 'tpope/vim-fugitive' },
+
+  -- File Explorer tree for Neovim https://github.com/nvim-tree/nvim-tree.lua - Jinchu
+  {
+    'nvim-tree/nvim-tree.lua',
+    config = function()
+      require('nvim-tree').setup()
+    end,
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
