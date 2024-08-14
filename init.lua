@@ -108,6 +108,11 @@ vim.opt.relativenumber = true
 vim.opt.colorcolumn = '100'
 vim.opt.expandtab = true
 
+-- spellcheck
+-- Test let's try spppleeling something wront
+vim.opt.spell = true
+vim.opt.spelllang = 'en_us'
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
