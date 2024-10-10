@@ -224,8 +224,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_augroup('AutoFormat', {})
+
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   desc = 'For terraform LSP',
+  group = 'AutoFormat',
   pattern = { '*.tf', '*.tfvars' },
   callback = function()
     vim.lsp.buf.format()
@@ -702,7 +705,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
