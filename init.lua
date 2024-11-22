@@ -199,6 +199,10 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Jinchu: Git keys fugitive
+vim.keymap.set('n', '<leader>gb', '<cmd>:Git blame <CR>', { desc = '[G]it [B]lambe' })
+vim.keymap.set('n', '<leader>gl', '<cmd>:Git log <CR>', { desc = '[G]it [L]og' })
+
 -- Jinchu: web search the current word
 vim.keymap.set('n', '<leader>si', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<cword>"<CR>', {
   desc = '[S]earch current word in the [I]nternet',
