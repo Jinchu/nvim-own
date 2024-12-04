@@ -901,6 +901,17 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
+  -- Fugitive is the Git add-on for nvim
+  { 'tpope/vim-fugitive' },
+
+  -- File Explorer tree for Neovim https://github.com/nvim-tree/nvim-tree.lua - Jinchu
+  {
+    'nvim-tree/nvim-tree.lua',
+    config = function()
+      require('nvim-tree').setup()
+    end,
+  },
+
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
