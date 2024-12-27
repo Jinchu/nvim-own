@@ -108,6 +108,10 @@ vim.opt.relativenumber = true
 vim.opt.colorcolumn = '100'
 vim.opt.expandtab = true
 
+-- Make tabs 4 spaces long
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- spellcheck
 -- Test let's try spppleeling something wront
 vim.opt.spell = true
@@ -247,6 +251,22 @@ vim.api.nvim_create_autocmd('FileType', {
       cmd = { 'bash-language-server', 'start' },
     }
   end,
+})
+
+-- improve terminal
+vim.api.nvim_create_autocmd('TermOpen', {
+  group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
+  callback = function()
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+  end,
+})
+
+vim.keymap.set('n', '<leader>st', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+end, {
+  desc = 'Open [T]erminal next to the current buffer',
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
