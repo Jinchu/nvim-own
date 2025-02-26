@@ -211,6 +211,9 @@ vim.keymap.set('n', '<leader>gl', '<cmd>:Git log <CR>', { desc = '[G]it [L]og' }
 vim.keymap.set('n', '<leader>si', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<cword>"<CR>', {
   desc = '[S]earch current word in the [I]nternet',
 })
+vim.keymap.set('n', '<leader>sa', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=$(xclip -selection clipboard -o)"<CR>', {
+  desc = '[S]earch current word in the [I]nternet',
+})
 vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>', { desc = 'Toggle File Tree' })
 vim.keymap.set('n', '<leader>nn', ':NvimTreeFindFile<CR>', { desc = 'Fi[N]d current file i[N] tree' })
 vim.keymap.set('n', '<leader>nc', ':NvimTreeCollapse<CR>', { desc = 'Collapse File Tree' })
@@ -682,7 +685,9 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
-        terraformls = {},
+        terraformls = {
+          offset_encoding = 'utf-8',
+        },
         pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -762,7 +767,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, java = true }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
@@ -920,7 +925,12 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
 
   -- Fugitive is the Git add-on for nvim
   { 'tpope/vim-fugitive' },
@@ -976,7 +986,19 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -985,6 +1007,13 @@ require('lazy').setup({
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
+        disable = function(lang, buf)
+          local max_filesize = 200 * 1024 -- 200 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+            return true
+          end
+        end,
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
