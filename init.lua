@@ -208,6 +208,9 @@ vim.keymap.set('n', '<leader>gb', '<cmd>:Git blame <CR>', { desc = '[G]it [B]lam
 vim.keymap.set('n', '<leader>gl', '<cmd>:Git log <CR>', { desc = '[G]it [L]og' })
 
 -- Jinchu: web search the current word
+vim.keymap.set('n', '<leader>sa', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<register>"<CR>', {
+  desc = '[S]earch current word in the [I]nternet',
+})
 vim.keymap.set('n', '<leader>si', '<cmd>:!$BROWSER "https://duckduckgo.com/?q=<cword>"<CR>', {
   desc = '[S]earch current word in the [I]nternet',
 })
@@ -220,6 +223,7 @@ vim.keymap.set('n', '<leader>nc', ':NvimTreeCollapse<CR>', { desc = 'Collapse Fi
 
 -- replace line with yanked text
 vim.keymap.set('n', '<leader>p', '"_ddkp', { desc = 're[p]lace the this line' })
+--
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -930,6 +934,14 @@ require('lazy').setup({
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
+  },
+
+  -- universal clipboard
+  {
+    'swaits/universal-clipboard.nvim',
+    opts = {
+      verbose = true, -- optional: set true to log detection details
+    },
   },
 
   -- Fugitive is the Git add-on for nvim
